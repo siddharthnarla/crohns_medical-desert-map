@@ -5,282 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WA IBD Access Map — Medical Desert Mapping Project</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy:    #0D1B2A;
-    --crimson: #C1121F;
-    --amber:   #E9830C;
-    --blue:    #2E6BA8;
-    --teal:    #1A9870;
-    --bg:      #F7F4EF;
-    --surface: #FFFFFF;
-    --muted:   #6B7280;
-    --border:  #E2DDD6;
-    --text:    #1A1A2E;
-  }
-
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  header {
-    background: var(--navy);
-    color: #fff;
-    padding: 20px 32px;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .header-left h1 {
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  .header-left p {
-    font-size: 13px;
-    color: rgba(255,255,255,0.55);
-    margin-top: 2px;
-  }
-
-  .header-right {
-    font-size: 12px;
-    color: rgba(255,255,255,0.4);
-    text-align: right;
-  }
-
-  .stats-bar {
-    background: var(--navy);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding: 16px 32px;
-    display: flex;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .stat-num {
-    font-size: 26px;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
-  .stat-num.red   { color: #F87171; }
-  .stat-num.amber { color: #FBB040; }
-  .stat-num.teal  { color: #4DD9AC; }
-
-  .stat-label {
-    font-size: 12px;
-    color: rgba(255,255,255,0.45);
-    margin-top: 4px;
-  }
-
-  main {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 28px 24px 48px;
-  }
-
-  .map-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 24px;
-  }
-
-  .map-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .legend-swatch {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-
-  #map-container svg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .county-path {
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-
-  .county-path:hover { opacity: 0.82; }
-
-  .tooltip-bar {
-    min-height: 44px;
-    margin-top: 14px;
-    padding: 10px 14px;
-    background: var(--bg);
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .tooltip-bar.active { color: var(--text); }
-
-  .tooltip-county { font-weight: 600; color: var(--navy); }
-  .tooltip-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  .badge-desert   { background: #FEE2E2; color: #991B1B; }
-  .badge-high     { background: #FEF3C7; color: #92400E; }
-  .badge-moderate { background: #DBEAFE; color: #1E40AF; }
-  .badge-adequate { background: #D1FAE5; color: #065F46; }
-
-  .section-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--navy);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .update-note {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--navy);
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .update-note strong { color: var(--navy); }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-
-  thead th {
-    text-align: left;
-    padding: 10px 12px;
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1.5px solid var(--border);
-    cursor: pointer;
-    user-select: none;
-    white-space: nowrap;
-  }
-
-  thead th:hover { color: var(--navy); }
-
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-  }
-
-  tbody tr:hover { background: var(--bg); }
-
-  tbody td {
-    padding: 9px 12px;
-    color: var(--text);
-  }
-
-  td.county-name { font-weight: 500; }
-
-  .ratio-cell { font-variant-numeric: tabular-nums; }
-
-  .table-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .table-header {
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .table-search {
-    padding: 6px 12px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 13px;
-    font-family: inherit;
-    outline: none;
-    background: var(--bg);
-    color: var(--text);
-    width: 200px;
-  }
-
-  .table-search:focus { border-color: var(--navy); }
-
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #060810; color: #E8E4DE; font-size: 15px; line-height: 1.6; }
+  header { background: #060810; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 20px 32px; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .header-left h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: #fff; }
+  .header-left p  { font-size: 13px; color: rgba(255,255,255,0.38); margin-top: 2px; }
+  .header-right   { font-size: 12px; color: rgba(255,255,255,0.22); text-align: right; }
+  .stats-bar { background: #0A0D14; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 16px 32px; display: flex; gap: 40px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; }
+  .stat-num { font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+  main { max-width: 1020px; margin: 0 auto; padding: 28px 24px 48px; }
+  .map-section { background: #0A0D14; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 22px; margin-bottom: 24px; }
+  .legend-cats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; font-size: 13px; }
+  .legend-cat { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); }
+  .cat-swatch { width: 28px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+  #map-container { border-radius: 8px; overflow: hidden; background: #060810; }
+  #map-container svg { width: 100%; height: auto; display: block; }
+  .county-path { cursor: pointer; transition: opacity 0.12s; }
+  .county-path:hover { opacity: 0.75; }
+  .tooltip-bar { min-height: 46px; margin-top: 14px; padding: 10px 16px; background: #11151E; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); font-size: 13px; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tooltip-bar.active { color: #E8E4DE; }
+  .tooltip-county { font-weight: 600; color: #fff; }
+  .tooltip-cat { font-weight: 600; }
+  .update-note { background: #0A0D14; border: 1px solid rgba(255,255,255,0.06); border-left: 3px solid rgba(255,255,255,0.18); border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: rgba(255,255,255,0.38); line-height: 1.7; }
+  .update-note strong { color: #E8E4DE; }
+  code { background: rgba(255,255,255,0.07); padding: 1px 5px; border-radius: 4px; font-size: 12px; color: #60BFFF; }
+  .table-wrap { background: #0A0D14; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; overflow: hidden; }
+  .table-header { padding: 16px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .section-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.38); letter-spacing: 0.07em; text-transform: uppercase; }
+  .table-search { padding: 6px 12px; border: 1px solid rgba(255,255,255,0.09); border-radius: 6px; font-size: 13px; font-family: inherit; outline: none; background: rgba(255,255,255,0.04); color: #E8E4DE; width: 200px; }
+  .table-search::placeholder { color: rgba(255,255,255,0.2); }
+  .table-search:focus { border-color: rgba(255,255,255,0.22); }
   .table-scroll { overflow-x: auto; }
-
-  footer {
-    text-align: center;
-    padding: 28px 24px;
-    font-size: 12px;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-  }
-
-  footer a { color: var(--navy); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
-
-  @media (max-width: 600px) {
-    header { padding: 16px 18px; }
-    .stats-bar { padding: 14px 18px; gap: 24px; }
-    main { padding: 18px 14px 40px; }
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { text-align: left; padding: 10px 12px; font-weight: 600; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.28); border-bottom: 1px solid rgba(255,255,255,0.06); cursor: pointer; user-select: none; white-space: nowrap; }
+  thead th:hover { color: rgba(255,255,255,0.65); }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.1s; }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  tbody td { padding: 9px 12px; color: #B0ACA6; }
+  td.county-name { font-weight: 500; color: #E0DCD6; }
+  .ratio-cell { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 7px; }
+  footer { text-align: center; padding: 28px 24px; font-size: 12px; color: rgba(255,255,255,0.18); border-top: 1px solid rgba(255,255,255,0.05); }
+  @media (max-width: 600px) { header, .stats-bar { padding: 16px 18px; } main { padding: 18px 14px 40px; } .stats-bar { gap: 20px; } }
 </style>
 </head>
 <body>
@@ -297,45 +67,34 @@
 </header>
 
 <div class="stats-bar">
-  <div class="stat">
-    <span class="stat-num red">17</span>
-    <span class="stat-label">Counties with zero GI specialists</span>
-  </div>
-  <div class="stat">
-    <span class="stat-num amber">471,000</span>
-    <span class="stat-label">People in medical deserts</span>
-  </div>
-  <div class="stat">
-    <span class="stat-num teal">590</span>
-    <span class="stat-label">GI specialists statewide</span>
-  </div>
-  <div class="stat">
-    <span class="stat-num" style="color:#fff;">~80,000</span>
-    <span class="stat-label">Estimated IBD patients in WA</span>
-  </div>
+  <div class="stat"><span class="stat-num" style="color:#C45C5C;">17</span><span class="stat-label">Medical desert counties</span></div>
+  <div class="stat"><span class="stat-num" style="color:#C8964A;">471,000</span><span class="stat-label">People without GI coverage</span></div>
+  <div class="stat"><span class="stat-num" style="color:#5BAD85;">590</span><span class="stat-label">GI specialists statewide</span></div>
+  <div class="stat"><span class="stat-num" style="color:#fff;">~80,000</span><span class="stat-label">Estimated IBD patients in WA</span></div>
 </div>
 
 <main>
+  <div class="update-note">
+    <strong>How to update:</strong> Open this file in any text editor, find <code>COUNTY DATA — UPDATE HERE</code>,
+    and change the <code>gi</code> number for any county. Everything updates automatically. Also update <code>lastUpdated</code>.
+  </div>
 
   <div class="map-section">
-    <div class="map-legend">
-      <div class="legend-item"><div class="legend-swatch" style="background:#C1121F;"></div>Medical desert — 0 GI specialists</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#E9830C;"></div>High need — 500:1+</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#2E6BA8;"></div>Moderate — 200–499:1</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#1A9870;"></div>Adequate — &lt;200:1</div>
+    <div class="legend-cats">
+      <div class="legend-cat"><div class="cat-swatch" style="background:#4E9E72;"></div>Adequate (&lt;200:1)</div>
+      <div class="legend-cat"><div class="cat-swatch" style="background:#C8B84A;"></div>Moderate (200–499:1)</div>
+      <div class="legend-cat"><div class="cat-swatch" style="background:#C87A42;"></div>High need (500–999:1)</div>
+      <div class="legend-cat"><div class="cat-swatch" style="background:#B84848;"></div>Critical (&gt;1000:1)</div>
+      <div class="legend-cat"><div class="cat-swatch" style="background:#7A1E1E;"></div>Medical desert (0 specialists)</div>
     </div>
-
     <div id="map-container"></div>
-
-    <div class="tooltip-bar" id="tooltip">
-      Hover over a county to see details
-    </div>
+    <div class="tooltip-bar" id="tooltip">Hover over a county to see details</div>
   </div>
 
   <div class="table-wrap">
     <div class="table-header">
       <div class="section-title">All 39 counties</div>
-      <input class="table-search" id="search" type="text" placeholder="Search county…" oninput="filterTable()">
+      <input class="table-search" id="search" type="text" placeholder="Search county…" oninput="renderTable()">
     </div>
     <div class="table-scroll">
       <table>
@@ -353,11 +112,10 @@
       </table>
     </div>
   </div>
-
 </main>
 
 <footer>
-  Medical Desert Mapping Project &mdash; reporting geographic gaps in GI care access to the Washington State Department of Health.
+  Medical Desert Mapping Project — reporting geographic gaps in GI care access to the Washington State Department of Health.
   Data sourced from the CMS National Provider Identifier Registry and the U.S. Census Bureau.
 </footer>
 
@@ -367,9 +125,9 @@
 
 /* ============================================================
    COUNTY DATA — UPDATE HERE
-   Change 'gi' to update specialist count for any county.
-   'pop' comes from Census 2025 — update annually if needed.
-   lastUpdated: change to today's date when you update.
+   Change 'gi' for any county to update specialist count.
+   'pop' from Census 2025 — update annually if needed.
+   Change lastUpdated string when you make updates.
    ============================================================ */
 const lastUpdated = "June 2026";
 document.getElementById("last-updated").textContent = "Last updated: " + lastUpdated;
@@ -419,20 +177,27 @@ const countyData = {
    END OF UPDATE SECTION
    ============================================================ */
 
-function ibd(d)   { return Math.round(d.pop * 0.01); }
-function ratio(d) { return d.gi === 0 ? Infinity : Math.round(ibd(d) / d.gi); }
-function category(d) {
-  if (d.gi === 0)        return "desert";
-  if (ratio(d) >= 500)   return "high";
-  if (ratio(d) >= 200)   return "moderate";
-  return "adequate";
-}
-const CAT = {
-  desert:   { fill: "#C1121F", stroke: "#8B0000", label: "Medical desert",  badge: "badge-desert"   },
-  high:     { fill: "#E9830C", stroke: "#A85B08", label: "High need",       badge: "badge-high"     },
-  moderate: { fill: "#2E6BA8", stroke: "#1A4A7A", label: "Moderate",        badge: "badge-moderate" },
-  adequate: { fill: "#1A9870", stroke: "#0D6B52", label: "Adequate",        badge: "badge-adequate" },
+function ibdEst(d)   { return Math.round(d.pop * 0.01); }
+function ratio(d)    { return d.gi === 0 ? Infinity : Math.round(ibdEst(d) / d.gi); }
+function ratioStr(d) { const r = ratio(d); return r === Infinity ? "No coverage" : r.toLocaleString() + ":1"; }
+
+// One flat color per category — no gradient, no ambiguity
+const CATS = {
+  adequate: { label: "Adequate",       color: "#4E9E72", order: 0 },
+  moderate: { label: "Moderate",       color: "#C8B84A", order: 1 },
+  high:     { label: "High need",      color: "#C87A42", order: 2 },
+  critical: { label: "Critical",       color: "#B84848", order: 3 },
+  desert:   { label: "Medical desert", color: "#7A1E1E", order: 4 },
 };
+
+function category(d) {
+  if (d.gi === 0)      return CATS.desert;
+  const r = ratio(d);
+  if (r >= 1000)       return CATS.critical;
+  if (r >= 500)        return CATS.high;
+  if (r >= 200)        return CATS.moderate;
+  return                      CATS.adequate;
+}
 
 /* ---- MAP ---- */
 const tip = document.getElementById("tooltip");
@@ -442,48 +207,40 @@ d3.json("https://cdn.jsdelivr.net/npm/vega-datasets@2.8.0/data/us-10m.json").the
   const waCounties  = allCounties.filter(f => Math.floor(+f.id / 1000) === 53);
   const waState     = topojson.feature(us, us.objects.states).features.find(f => +f.id === 53);
 
-  const W = 800, H = 500;
+  const W = 820, H = 510;
   const proj = d3.geoMercator().fitSize([W, H], waState);
   const path = d3.geoPath(proj);
 
   const svg = d3.select("#map-container").append("svg")
     .attr("viewBox", `0 0 ${W} ${H}`)
-    .attr("width", "100%");
+    .attr("width", "100%")
+    .style("background", "#060810");
 
-  svg.selectAll("path.county")
+  svg.append("g")
+    .selectAll("path")
     .data(waCounties)
     .join("path")
     .attr("class", "county-path")
     .attr("d", path)
-    .attr("fill", d => {
-      const cd = countyData[+d.id];
-      return cd ? CAT[category(cd)].fill : "#ccc";
-    })
-    .attr("stroke", d => {
-      const cd = countyData[+d.id];
-      return cd ? CAT[category(cd)].stroke : "#999";
-    })
-    .attr("stroke-width", 0.8)
+    .attr("fill", d => { const cd = countyData[+d.id]; return cd ? category(cd).color : "#141820"; })
+    .attr("stroke", "#060810")
+    .attr("stroke-width", 1.0)
     .on("mouseover", function(event, d) {
       const cd = countyData[+d.id];
       if (!cd) return;
       const cat = category(cd);
-      const r = ratio(cd);
-      const ratioStr = r === Infinity ? "no coverage" : r.toLocaleString() + ":1";
+      d3.select(this).attr("stroke", "rgba(255,255,255,0.55)").attr("stroke-width", 1.8);
       tip.className = "tooltip-bar active";
       tip.innerHTML =
         `<span class="tooltip-county">${cd.name} County</span>
-         <span class="tooltip-badge ${CAT[cat].badge}">${CAT[cat].label}</span>
+         &nbsp;·&nbsp;
+         <span class="tooltip-cat" style="color:${cat.color}">${cat.label}</span>
          &nbsp;·&nbsp; ${cd.gi} GI specialist${cd.gi !== 1 ? "s" : ""}
-         &nbsp;·&nbsp; ~${ibd(cd).toLocaleString()} IBD patients
-         &nbsp;·&nbsp; ratio: ${ratioStr}`;
-      d3.select(this).attr("stroke-width", 2.5).attr("stroke", "#0D1B2A");
+         &nbsp;·&nbsp; ~${ibdEst(cd).toLocaleString()} IBD patients
+         &nbsp;·&nbsp; <span style="color:${cat.color};font-weight:700;">${ratioStr(cd)}</span>`;
     })
-    .on("mouseout", function(event, d) {
-      const cd = countyData[+d.id];
-      d3.select(this)
-        .attr("stroke-width", 0.8)
-        .attr("stroke", cd ? CAT[category(cd)].stroke : "#999");
+    .on("mouseout", function() {
+      d3.select(this).attr("stroke", "#060810").attr("stroke-width", 1.0);
       tip.className = "tooltip-bar";
       tip.innerHTML = "Hover over a county to see details";
     });
@@ -492,57 +249,58 @@ d3.json("https://cdn.jsdelivr.net/npm/vega-datasets@2.8.0/data/us-10m.json").the
     .datum(topojson.mesh(us, us.objects.counties,
       (a, b) => Math.floor(+a.id/1000) === 53 && Math.floor(+b.id/1000) === 53 && a !== b))
     .attr("fill", "none")
-    .attr("stroke", "rgba(255,255,255,0.35)")
-    .attr("stroke-width", 0.5)
+    .attr("stroke", "rgba(0,0,0,0.3)")
+    .attr("stroke-width", 0.4)
+    .attr("d", path);
+
+  svg.append("path")
+    .datum(waState)
+    .attr("fill", "none")
+    .attr("stroke", "rgba(255,255,255,0.14)")
+    .attr("stroke-width", 1.2)
     .attr("d", path);
 });
 
 /* ---- TABLE ---- */
-let sortKey = "cat";
-let sortDir = 1;
-const catOrder = { desert: 0, high: 1, moderate: 2, adequate: 3 };
+let sortKey = "ratio", sortDir = 1;
 
 function buildRows() {
   const q = document.getElementById("search").value.toLowerCase();
-  let rows = Object.values(countyData).filter(d => d.name.toLowerCase().includes(q));
-  rows.sort((a, b) => {
-    let av, bv;
-    if (sortKey === "name")  { av = a.name; bv = b.name; return sortDir * av.localeCompare(bv); }
-    if (sortKey === "pop")   { av = a.pop;  bv = b.pop;  }
-    if (sortKey === "ibd")   { av = ibd(a); bv = ibd(b); }
-    if (sortKey === "gi")    { av = a.gi;   bv = b.gi;   }
-    if (sortKey === "ratio") { av = ratio(a); bv = ratio(b); }
-    if (sortKey === "cat")   { av = catOrder[category(a)]; bv = catOrder[category(b)]; }
-    return sortDir * (av - bv);
-  });
-  return rows;
+  return Object.values(countyData)
+    .filter(d => d.name.toLowerCase().includes(q))
+    .sort((a, b) => {
+      if (sortKey === "name") return sortDir * a.name.localeCompare(b.name);
+      if (sortKey === "pop")  return sortDir * (a.pop - b.pop);
+      if (sortKey === "ibd")  return sortDir * (ibdEst(a) - ibdEst(b));
+      if (sortKey === "gi")   return sortDir * (a.gi - b.gi);
+      if (sortKey === "cat")  return sortDir * (category(a).order - category(b).order);
+      if (sortKey === "ratio") {
+        const ra = ratio(a) === Infinity ? 99999 : ratio(a);
+        const rb = ratio(b) === Infinity ? 99999 : ratio(b);
+        return sortDir * (ra - rb);
+      }
+      return 0;
+    });
 }
 
 function renderTable() {
-  const rows = buildRows();
-  const tbody = document.getElementById("table-body");
-  tbody.innerHTML = rows.map(d => {
+  document.getElementById("table-body").innerHTML = buildRows().map(d => {
     const cat = category(d);
-    const r = ratio(d);
-    const ratioStr = r === Infinity ? "—" : r.toLocaleString() + ":1";
     return `<tr>
-      <td class="county-name">${d.name}</td>
+      <td class="county-name"><span class="dot" style="background:${cat.color};"></span>${d.name}</td>
       <td>${d.pop.toLocaleString()}</td>
-      <td>${ibd(d).toLocaleString()}</td>
+      <td>${ibdEst(d).toLocaleString()}</td>
       <td>${d.gi}</td>
-      <td class="ratio-cell">${ratioStr}</td>
-      <td><span class="tooltip-badge ${CAT[cat].badge}">${CAT[cat].label}</span></td>
+      <td class="ratio-cell" style="color:${cat.color}">${ratioStr(d)}</td>
+      <td style="color:${cat.color};font-weight:600;">${cat.label}</td>
     </tr>`;
   }).join("");
 }
 
 function sortTable(key) {
-  if (sortKey === key) sortDir *= -1;
-  else { sortKey = key; sortDir = 1; }
+  sortKey === key ? sortDir *= -1 : (sortKey = key, sortDir = 1);
   renderTable();
 }
-
-function filterTable() { renderTable(); }
 
 renderTable();
 </script>
